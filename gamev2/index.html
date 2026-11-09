@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Calculus Adventure</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="settings.css">
+  <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="buttons.css">
+</head>
+<body>
+<div class="stage" id="stage">
+  <img class="bg" src="assets/home.jpg" alt="Calculus Adventure" draggable="false">
+ 
+  <!-- moving cutouts: clouds, zombies, hands (position/image set in home.css) -->
+  <div class="sp cl" id="cl1"></div>
+  <div class="sp cl" id="cl2"></div>
+  <div class="sp cl" id="cl3"></div>
+  <div class="sp zb" id="zl"></div>
+  <div class="sp zb" id="zr"></div>
+  <div class="sp hand" id="hb"></div>
+  <div class="sp hand" id="hg"></div>
+  <div class="sp hand" id="hr"></div>
+ 
+  <!-- title glitch slices (copy of the title area of the picture), drips, floating particles -->
+  <div class="fx glitch" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="fx drips" aria-hidden="true"></div>
+  <canvas class="fx particles" aria-hidden="true"></canvas>
+ 
+  <!-- glow effects -->
+  <div class="fx moon"></div>
+  <div class="fx sword"></div>
+  <div class="fx tt title-layer"></div>   <!-- title letters glow -->
+  <div class="fx tg2 title-layer"></div>  <!-- title letters glitch -->
+  <div class="fx fog"></div>
+  <div class="fx fog b"></div>
+  <div id="bats"></div>                   <!-- bats + castle windows are added by home.js -->
+ 
+  <!-- menu buttons -->
+  <button class="hs" id="start"    aria-label="Start"><span class="glow"></span></button>
+  <button class="hs" id="settings" aria-label="Settings"><span class="glow"></span></button>
+  <button class="hs" id="quitbtn"  aria-label="Quit"><span class="glow"></span></button>
+ 
+  <!-- overlays -->
+  <div class="ov" id="setov"></div>
+  <div class="ov" id="loading">
+    <img class="bg" src="assets/loading.jpg" alt="">
+    <div class="t">LOADING...</div>
+    <div class="bar"><div id="fill"></div></div>
+  </div>
+  <div class="ov" id="quit"><p>THANKS FOR PLAYING!<small>click anywhere to return</small></p></div>
+</div>
+ 
+<!-- background music (volume + mute are controlled by the Settings panel via settings.js) -->
+<audio id="bgm" src="assets/menu_theme.mp3" loop preload="auto"></audio>
+ 
+<script src="settings.js"></script>
+<script src="home.js"></script>
+<script>
+  /* Start the menu music. Browsers block autoplay until the player interacts,
+     so try right away and fall back to the first click / key / touch. */
+  (function () {
+    const bgm = document.getElementById('bgm');
+ 
+    /* iPhone/iPad ignore audio.volume, so detect that and use a Web Audio gain node instead */
+    bgm.volume = .5;
+    const volumeWorks = bgm.volume === .5;
+    let gain = null;
+    const useGain = () => {
+      if (volumeWorks || gain) return;
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        gain = ctx.createGain();
+        ctx.createMediaElementSource(bgm).connect(gain);
+        gain.connect(ctx.destination);
+        if (ctx.state === 'suspended') ctx.resume();
+      } catch (e) {}
+    };
+ 
+    /* apply the Music slider + Mute toggle (runs now and every time a setting changes) */
+    const applyVolume = () => {
+      const v = CC.settings.mute ? 0 : CC.settings.music;
+      bgm.muted = CC.settings.mute;
+      if (volumeWorks) bgm.volume = v;
+      else if (gain) gain.gain.value = v;
+    };
+    window.addEventListener('cc:settings', applyVolume);
+    applyVolume();
+ 
+    const events = ['pointerdown', 'keydown', 'touchstart'];
+    const started = () => { useGain(); applyVolume(); };
+    const unlock = () => {
+      bgm.play().then(() => { started(); events.forEach(ev => removeEventListener(ev, unlock)); }).catch(() => {});
+    };
+    bgm.play().then(started).catch(() => events.forEach(ev => addEventListener(ev, unlock)));
+  })();
+</script>
+</body>
+</html>

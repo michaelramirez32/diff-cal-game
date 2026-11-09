@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calculus Adventure</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="menu-fx.css">
+</head>
+<body class="menu-page">
+
+  <div class="menu-stage">
+    <!-- 1. the menu picture (title + buttons are part of it) -->
+    <img class="menu-art" src="menu-bg-clean.jpg" alt="">
+    <img class="hand hand-left" src="hand-left.png" alt="">
+    <img class="hand hand-right" src="hand-right.png" alt="">
+
+    <!-- 2. effect layers (do not catch clicks) -->
+    <div class="fx fog" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="fx glitch" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="fx drips" aria-hidden="true"></div>
+    <canvas class="fx particles" aria-hidden="true"></canvas>
+
+    <!-- 3. clickable buttons on top of the picture -->
+    <button class="hit hit-start" id="btnStart" type="button" aria-label="Start"><span class="glow"></span></button>
+    <button class="hit hit-settings" id="btnSettings" type="button" aria-label="Settings"><span class="glow"></span></button>
+    <button class="hit hit-quit" id="btnQuit" type="button" aria-label="Quit"><span class="glow"></span></button>
+  </div>
+
+  <!-- POPUP window (used by Settings and Quit) -->
+  <div class="modal" id="popup" role="dialog" aria-modal="true" aria-labelledby="popupTitle" hidden>
+    <div class="card">
+      <h2 id="popupTitle"></h2>
+      <ul id="popupList"></ul>
+      <p id="popupNote"></p>
+      <button class="btn" id="popupClose" type="button">Got it</button>
+    </div>
+  </div>
+
+<script src="config.js"></script>
+<script src="menu.js"></script>
+<script src="menu-fx.js"></script>
+</body>
+</html>

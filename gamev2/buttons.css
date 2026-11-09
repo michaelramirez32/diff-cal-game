@@ -1,0 +1,21 @@
+/* Positions of the menu buttons (moved out of index.html) */
+#start {
+  left: 40.36%;
+  top: 71.85%;
+  width: 19.27%;
+  height: 8.52%;
+}
+
+#settings {
+  left: 41.15%;
+  top: 82.13%;
+  width: 17.19%;
+  height: 5.46%;
+}
+
+#quitbtn {
+  left: 45.2%;
+  top: 87.7%;
+  width: 8.96%;
+  height: 5.2%;
+}

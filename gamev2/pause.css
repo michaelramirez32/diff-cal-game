@@ -1,0 +1,13 @@
+/* Pause menu styles. Link this on game.html */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+#ccp{position:fixed;inset:0;z-index:9999;display:none;font-family:'Press Start 2P',monospace;background:linear-gradient(to bottom,rgba(10,5,30,.55),rgba(10,5,30,.88))}
+#ccp.open{display:block}
+#ccp .m{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3vh}
+#ccp h1{margin:0;color:#fff;font-size:min(8vw,14vh);letter-spacing:.4vw;text-shadow:0 .6vh 1.6vh rgba(0,0,0,.6)}
+#ccp .bars{display:flex;gap:2.4vh;height:12vh;margin:1vh 0 4vh}#ccp .bars b{width:4vh;background:#fff;border-radius:.8vh;box-shadow:0 .5vh 1.2vh rgba(0,0,0,.5)}
+#ccp .b{background:none;border:0;cursor:pointer;font:inherit;font-size:min(3.2vw,5.5vh);padding:1vh 3vw;color:#d8c8ff;text-shadow:0 .5vh 1vh rgba(0,0,0,.6);transition:transform .1s,color .1s}
+#ccp .b:hover,#ccp .b:focus-visible{transform:scale(1.12);color:#fff;outline:0}
+#ccp .b.q{color:#ff6a30}#ccp .b.q:hover{color:#ff9a5a}
+#ccp .s{position:absolute;inset:0;display:none;background:rgba(5,3,20,.8);backdrop-filter:blur(3px)}#ccp.set .s{display:block}#ccp.set .m{display:none}
+#ccPauseBtn{position:fixed;top:12px;right:12px;z-index:9998;width:46px;height:46px;border:3px solid #fff;border-radius:10px;background:rgba(20,10,50,.65);cursor:pointer;display:flex;gap:6px;align-items:center;justify-content:center}
+#ccPauseBtn i{width:7px;height:20px;background:#fff;display:block}#ccPauseBtn:hover{background:rgba(90,60,160,.8)}

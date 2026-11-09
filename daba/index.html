@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Loading…</title>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+ 
+  <!-- BACKGROUND: placeholder paper grid. Set CONFIG.background.image in config.js to replace it. -->
+  <div id="bg"><div class="grid"></div></div>
+ 
+  <main>
+    <h1 id="title">Your Game</h1>
+ 
+    <!-- STAGE: the character walks on the ground line -->
+    <div class="stage">
+      <div class="walker" id="walker">
+        <div class="shadow"></div>
+        <div class="hero" id="hero" role="img" aria-label="Loading character"></div>
+      </div>
+      <div class="dashes"></div>
+    </div>
+ 
+    <!-- HUD: status + progress bar -->
+    <section class="hud" aria-label="Loading">
+      <p id="status" aria-live="polite">Warming up…</p>
+      <div class="bar" id="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <i id="fill"></i>
+      </div>
+      <p class="pct" id="pct">0%</p>
+    </section>
+  </main>
+ 
+<script src="config.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

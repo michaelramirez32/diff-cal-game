@@ -1,0 +1,12 @@
+/* Settings panel (tombstone) styles. Link this on every page that uses settings.js */
+.ccs-stage{position:absolute;left:50%;top:50%;width:min(100vw,177.78vh);aspect-ratio:16/9;transform:translate(-50%,-50%);container-type:inline-size}
+.ccs-stage>img{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;image-rendering:auto}
+.ccs-exit{position:absolute;left:1.9%;top:4.3%;width:15.2%;padding:0;border:0;background:none;cursor:pointer;transition:transform .12s}
+.ccs-exit img{width:100%;display:block}.ccs-exit:hover{transform:scale(1.07)}.ccs-exit:active{transform:scale(.95)}
+.ccs-sl{position:absolute;border:.17cqw solid #7a6679;cursor:pointer;touch-action:none;outline-offset:.4cqw}
+.ccs-line{position:absolute;left:6%;right:6%;top:50%;height:11%;transform:translateY(-50%);background:#7a6679;border-radius:1cqw}
+.ccs-h{position:absolute;top:0;height:100%;width:10.8%;background:#aeb1c2;border:.2cqw solid #4a4150;box-sizing:border-box}
+.ccs-sl:hover .ccs-h{background:#c4c7d6}
+.ccs-tg{position:absolute;border:.22cqw solid #5d5163;border-radius:5cqw;background:#b9bccd;cursor:pointer;padding:0;transition:background .15s}
+.ccs-tg i{position:absolute;top:16%;height:68%;aspect-ratio:1;border-radius:50%;background:#7a6679;left:6%;transition:left .15s,background .15s}
+.ccs-tg.on{background:#7a6679}.ccs-tg.on i{left:auto;right:6%;background:#d9dbe8}

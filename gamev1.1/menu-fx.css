@@ -1,0 +1,143 @@
+/* ===== Menu effects layer (goes on top of menu-bg-clean.jpg) ===== */
+.menu-stage{overflow:hidden}
+.fx{position:absolute;inset:0;pointer-events:none}
+
+/* ---- 1. Fog / mist drifting across the picture ---- */
+.fog span{
+  position:absolute;
+  left:-30%;
+  width:160%;
+  height:34%;
+  background:radial-gradient(closest-side,rgba(170,215,255,.28),transparent 70%);
+  filter:blur(18px);
+  mix-blend-mode:screen;
+  opacity:.45;
+  animation:fogDrift 24s ease-in-out infinite alternate;
+}
+.fog span:nth-child(1){top:14%}
+.fog span:nth-child(2){top:48%;animation-duration:31s;animation-delay:-9s;opacity:.35}
+.fog span:nth-child(3){top:72%;animation-duration:19s;animation-delay:-4s;opacity:.3}
+@keyframes fogDrift{
+  from{transform:translateX(-7%)}
+  to  {transform:translateX(9%)}
+}
+
+/* ---- 2. Title glitch: slices copy the title area of the picture ---- */
+.glitch i{
+  position:absolute;
+  inset:0;
+  background:url("menu-bg-clean.jpg") center/100% 100% no-repeat;
+  opacity:0;
+}
+.glitch i:nth-child(1){animation:sliceA 3.7s steps(1,end) infinite}
+.glitch i:nth-child(2){animation:sliceB 5.3s steps(1,end) infinite;animation-delay:-2s}
+.glitch i:nth-child(3){animation:sliceC 4.1s steps(1,end) infinite;animation-delay:-1s}
+
+@keyframes sliceA{
+  0%,86%,100%{opacity:0}
+  87%{opacity:.9;clip-path:inset(27% 22.4% 52% 18.5%);transform:translateX(-8px)}
+  88%{clip-path:inset(40% 22.4% 36% 18.5%);transform:translateX(6px)}
+  89%{opacity:0}
+}
+@keyframes sliceB{
+  0%,70%,100%{opacity:0}
+  71%{opacity:.8;clip-path:inset(33% 22.4% 44% 18.5%);transform:translateX(5px);filter:drop-shadow(-4px 0 0 rgba(255,60,110,.8))}
+  72%{clip-path:inset(56% 22.4% 26% 18.5%);transform:translateX(-6px)}
+  73%{opacity:0}
+}
+@keyframes sliceC{
+  0%,93%,100%{opacity:0}
+  94%{opacity:.7;clip-path:inset(45% 22.4% 30% 18.5%);transform:translateX(-4px);filter:drop-shadow(4px 0 0 rgba(120,255,240,.8))}
+  95%{opacity:0}
+}
+
+/* ---- 3. Drips falling from under the title ---- */
+.drips{top:44%;height:14%}
+.drip{
+  position:absolute;
+  top:0;
+  border-radius:0 0 4px 4px;
+  background:linear-gradient(rgba(150,240,255,.95),rgba(150,240,255,.05));
+  box-shadow:0 0 6px rgba(126,232,255,.6);
+  transform-origin:top;
+  transform:scaleY(0);
+  opacity:0;
+  animation:dripFall var(--t,6s) ease-in infinite;
+  animation-delay:var(--d,0s);
+}
+@keyframes dripFall{
+  0%{transform:scaleY(0);opacity:0}
+  12%{opacity:.9}
+  75%{transform:scaleY(1);opacity:.7}
+  100%{transform:scaleY(1);opacity:0}
+}
+
+/* ---- 4. Floating particles (canvas) ---- */
+.particles{width:100%;height:100%}
+
+/* ---- 5. Buttons: floating + pulsing glow, brighter on hover ---- */
+.hit .glow{
+  position:absolute;
+  inset:-14% -8%;
+  border-radius:50%;
+  pointer-events:none;
+  mix-blend-mode:screen;
+  opacity:.55;
+  transition:opacity .25s ease;
+  animation:btnFloat 4s ease-in-out infinite;
+}
+.hit .glow::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:radial-gradient(closest-side,rgba(126,232,255,.5),transparent 75%);
+  animation:btnPulse 2.6s ease-in-out infinite;
+}
+.hit:hover .glow,.hit:focus-visible .glow{opacity:1}
+.hit-settings .glow{animation-delay:-1.3s}
+.hit-quit .glow{animation-delay:-2.1s}
+.hit-settings .glow::before{animation-delay:-.9s}
+.hit-quit .glow::before{animation-delay:-1.7s}
+
+@keyframes btnFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-5px)}
+}
+@keyframes btnPulse{
+  0%,100%{opacity:.35;transform:scale(.94)}
+  50%{opacity:1;transform:scale(1.06)}
+}
+
+/* ---- Reduced motion: keep it still ---- */
+@media (prefers-reduced-motion:reduce){
+  .fog span,.glitch,.drip,.hit .glow,.hit .glow::before{animation:none!important}
+  .glitch,.drips,.particles{display:none}
+}
+
+/* ---- 6. Foreground zombie hands: sway like they are reaching up ---- */
+.hand{
+  position:absolute;
+  pointer-events:none;
+  transform-origin:50% 100%;      /* pivot at the wrist (bottom of the hand) */
+}
+.hand-left{
+  left:9.806%;top:69.568%;width:15.289%;height:30.432%;
+  animation:handSwayL 6.5s ease-in-out infinite;
+}
+.hand-right{
+  left:67.921%;top:69.444%;width:9.927%;height:26.852%;
+  animation:handSwayR 6.5s ease-in-out infinite;
+  animation-delay:-2s;
+}
+@keyframes handSwayL{
+  0%,100%{transform:rotate(-1.5deg) translateY(0)}
+  50%{transform:rotate(1.5deg) translateY(-4px)}
+}
+@keyframes handSwayR{
+  0%,100%{transform:rotate(1.5deg) translateY(0)}
+  50%{transform:rotate(-1.5deg) translateY(-4px)}
+}
+@media (prefers-reduced-motion:reduce){
+  .hand{animation:none!important}
+}

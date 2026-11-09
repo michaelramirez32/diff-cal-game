@@ -1,0 +1,647 @@
+
+/* =========================================================
+   Calculus Adventure - HOME SCREEN styles (home.css)
+   Needs settings.css loaded too (settings panel).
+ 
+   Sections:
+     1. Base + stage
+     2. Menu buttons (hotspot, hover, glow)
+     3. Overlays (settings, loading, quit)
+     4. Sprite cutouts (position + image)
+     5. Animations (clouds, zombies, hands, glow effects, fog, bats)
+     6. Title glitch, drips, particles
+     7. Reduced motion
+   ========================================================= */
+ 
+ 
+/* =========================================================
+   1. BASE + STAGE
+   ========================================================= */
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: #12082b;
+  overflow: hidden;
+  font-family: 'Press Start 2P', monospace;
+}
+ 
+.stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(100vw, 177.78vh);
+  aspect-ratio: 16 / 9;
+  transform: translate(-50%, -50%);
+  container-type: inline-size;
+  overflow: hidden;
+}
+ 
+.bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+ 
+.fx,
+.sp {
+  position: absolute;
+  pointer-events: none;
+}
+ 
+.sp,
+.tt,
+.tg2 {
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+ 
+ 
+/* =========================================================
+   2. MENU BUTTONS
+   Invisible hotspot + glowing text cutout on hover
+   ========================================================= */
+.hs {
+  position: absolute;
+  z-index: 5;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: .6cqw;
+  transition: transform .1s;
+}
+ 
+.hs:active {
+  transform: scale(.96);
+}
+ 
+.hs:focus-visible {
+  outline: .2cqw solid rgba(190, 160, 255, .8);
+}
+ 
+/* text cutout that lights up on hover */
+.hs::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: 100% 100%;
+  opacity: 0;
+  transition: opacity .15s;
+  filter: brightness(1.7) drop-shadow(0 0 .7cqw rgba(214, 184, 255, .95));
+  pointer-events: none;
+}
+ 
+#start::before {
+  background-image: url(assets/sprites/btn_start.png);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+ 
+#settings::before {
+  background-image: url(assets/sprites/btn_settings.png);
+}
+ 
+#quitbtn::before {
+  background-image: url(assets/sprites/btn_quit.png);
+}
+ 
+.hs:hover::before,
+.hs:focus-visible::before {
+  opacity: 1 !important;
+  animation: hglitch 1.2s steps(1) infinite !important;
+  filter:
+    brightness(1.9)
+    drop-shadow(-.3cqw 0 0 rgba(0, 255, 255, .85))
+    drop-shadow(.3cqw 0 0 rgba(255, 40, 140, .8))
+    drop-shadow(0 0 1.2cqw rgba(190, 150, 255, .95));
+}
+ 
+/* neon underline that draws in on hover (works even without the sprite images) */
+.hs::after {
+  content: "";
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: -.2cqw;
+  height: .28cqw;
+  background: linear-gradient(90deg, transparent, #6cf, #e9f, #6cf, transparent);
+  box-shadow: 0 0 .9cqw #9cf, 0 0 2cqw #b8f;
+  transform: scaleX(0);
+  opacity: 0;
+  transition: transform .22s, opacity .22s;
+  pointer-events: none;
+}
+ 
+.hs:hover::after,
+.hs:focus-visible::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+ 
+/* floating + pulsing glow behind each button, brighter on hover */
+.hs .glow {
+  position: absolute;
+  inset: -14% -8%;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: .55;
+  transition: opacity .25s ease;
+  animation: btnFloat 4s ease-in-out infinite;
+}
+ 
+.hs .glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(126, 232, 255, .5), transparent 75%);
+  animation: btnPulse 2.6s ease-in-out infinite;
+}
+ 
+.hs:hover .glow,
+.hs:focus-visible .glow {
+  opacity: 1;
+}
+ 
+/* offset the timing so the three buttons don't pulse together */
+#settings .glow           { animation-delay: -1.3s; }
+#quitbtn .glow            { animation-delay: -2.1s; }
+#settings .glow::before   { animation-delay: -.9s; }
+#quitbtn .glow::before    { animation-delay: -1.7s; }
+ 
+ 
+/* =========================================================
+   3. OVERLAYS (sit above everything)
+   ========================================================= */
+.ov {
+  position: absolute;
+  inset: 0;
+  display: none;
+  z-index: 20;
+}
+ 
+.ov.on {
+  display: block;
+}
+ 
+/* settings */
+#setov {
+  background: rgba(5, 3, 20, .78);
+  backdrop-filter: blur(4px);
+}
+ 
+/* loading */
+#loading .t {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 46%;
+  text-align: center;
+  color: #fff;
+  font-size: 2.6cqw;
+  text-shadow: 0 0 1.4cqw #4cf;
+}
+ 
+#loading .bar {
+  position: absolute;
+  left: 35%;
+  top: 54%;
+  width: 30%;
+  height: 2.2cqw;
+  border: .3cqw solid #fff;
+  padding: .3cqw;
+  box-sizing: border-box;
+  border-radius: .4cqw;
+}
+ 
+#loading .bar div {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #6cf, #c9f);
+}
+ 
+/* quit */
+#quit {
+  background: #000;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+}
+ 
+#quit p {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 44%;
+  margin: 0;
+  font-size: 2.4cqw;
+}
+ 
+#quit small {
+  display: block;
+  margin-top: 2.5cqw;
+  font-size: 1.2cqw;
+  color: #9a8cc8;
+}
+ 
+ 
+/* =========================================================
+   4. SPRITE CUTOUTS
+   x, y, width, height are % of the 1920x1080 stage
+   ========================================================= */
+ 
+/* clouds */
+#cl1 {
+  left: 5.729%;
+  top: 6.481%;
+  width: 15.625%;
+  height: 37.037%;
+  background-image: url(assets/sprites/cl1.png);
+  animation-delay: 0s;
+}
+ 
+#cl2 {
+  left: 0%;
+  top: 48.148%;
+  width: 18.229%;
+  height: 16.667%;
+  background-image: url(assets/sprites/cl2.png);
+  animation-delay: -5s;
+}
+ 
+#cl3 {
+  left: 60.938%;
+  top: 0%;
+  width: 18.229%;
+  height: 11.574%;
+  background-image: url(assets/sprites/cl3.png);
+  animation-delay: -9s;
+}
+ 
+/* zombies */
+#zl {
+  left: 11.979%;
+  top: 53.241%;
+  width: 11.719%;
+  height: 28.241%;
+  background-image: url(assets/sprites/zl.png);
+  animation-delay: 0s;
+}
+ 
+#zr {
+  left: 90.365%;
+  top: 54.167%;
+  width: 9.635%;
+  height: 30.556%;
+  background-image: url(assets/sprites/zr.png);
+  animation-delay: -1.7s;
+}
+ 
+/* hands */
+#hb {
+  left: 3.125%;
+  top: 63.889%;
+  width: 9.635%;
+  height: 36.111%;
+  background-image: url(assets/sprites/hb.png);
+}
+ 
+#hg {
+  left: 11.771%;
+  top: 70.741%;
+  width: 9.635%;
+  height: 29.167%;
+  background-image: url(assets/sprites/hand-left.png);
+}
+ 
+#hr {
+  left: 69.063%;
+  top: 71.204%;
+  width: 7.552%;
+  height: 23.519%;
+  background-image: url(assets/sprites/hand-right.png);
+}
+ 
+/* title letters (glow + glitch layers share the same cutout) */
+.title-layer {
+  left: 17.188%;
+  top: 22.222%;
+  width: 61.458%;
+  height: 34.259%;
+  background-image: url(assets/sprites/title.png);
+}
+ 
+ 
+/* =========================================================
+   5. ANIMATIONS
+   ========================================================= */
+ 
+/* ---- clouds drift ---- */
+.cl {
+  animation: cd 14s ease-in-out infinite alternate;
+}
+ 
+@keyframes cd {
+  from { transform: translate(-.5cqw, .15cqw); }
+  to   { transform: translate(.6cqw, -.25cqw); }
+}
+ 
+/* ---- zombies sway ---- */
+.zb {
+  transform-origin: 50% 100%;
+  animation: zs 3.4s ease-in-out infinite alternate;
+}
+ 
+@keyframes zs {
+  from { transform: rotate(-1.3deg); }
+  to   { transform: rotate(1.3deg); }
+}
+ 
+/* ---- zombie hands sway like they are reaching up (pivot = wrist) ---- */
+.hand {
+  transform-origin: 50% 100%;
+}
+ 
+#hg {
+  animation: handSwayL 6.5s ease-in-out infinite;
+}
+ 
+#hr {
+  animation: handSwayR 6.5s ease-in-out infinite;
+  animation-delay: -2s;
+}
+ 
+@keyframes handSwayL {
+  0%, 100% { transform: rotate(-1.5deg) translateY(0); }
+  50%      { transform: rotate(1.5deg) translateY(-.21cqw); }
+}
+ 
+@keyframes handSwayR {
+  0%, 100% { transform: rotate(1.5deg) translateY(0); }
+  50%      { transform: rotate(-1.5deg) translateY(-.21cqw); }
+}
+ 
+/* ---- title glow ---- */
+.tt {
+  opacity: 0;
+  filter:
+    drop-shadow(0 0 .5cqw rgba(200, 170, 255, .95))
+    drop-shadow(0 0 1.5cqw rgba(110, 190, 255, .8));
+  animation: tglow 3.2s ease-in-out infinite;
+}
+ 
+@keyframes tglow {
+  0%, 100% { opacity: 0; }
+  50%      { opacity: .9; }
+}
+ 
+/* ---- title glitch (sprite version) ---- */
+.tg2 {
+  opacity: 0;
+  filter:
+    drop-shadow(-.45cqw 0 0 rgba(0, 255, 255, .85))
+    drop-shadow(.45cqw 0 0 rgba(255, 40, 140, .8));
+  animation: gl 5s steps(1) infinite;
+}
+ 
+@keyframes gl {
+  0%, 86%, 100% { opacity: 0; transform: none; }
+  87% { opacity: 1;  transform: translateX(-.6cqw);  clip-path: inset(10% 0 62% 0); }
+  89% {              transform: translateX(.7cqw);   clip-path: inset(55% 0 22% 0); }
+  91% {              transform: translateX(-.35cqw); clip-path: inset(30% 0 42% 0); }
+  93% { opacity: .9; transform: translateX(.5cqw);   clip-path: inset(72% 0 6% 0); }
+  95% { opacity: 0; }
+}
+ 
+/* ---- moon + sword glow ---- */
+.moon {
+  left: 24%;
+  top: -2%;
+  width: 22%;
+  height: 36%;
+  background: radial-gradient(circle, rgba(190, 220, 255, .5), transparent 65%);
+  mix-blend-mode: screen;
+  animation: moon 4.5s ease-in-out infinite;
+}
+ 
+@keyframes moon {
+  0%, 100% { opacity: .25; }
+  50%      { opacity: .7; }
+}
+ 
+.sword {
+  left: 47.4%;
+  top: 36%;
+  width: 5%;
+  height: 40%;
+  background: radial-gradient(ellipse, rgba(80, 255, 230, .75), transparent 70%);
+  mix-blend-mode: screen;
+  animation: sw 2.8s ease-in-out infinite;
+}
+ 
+@keyframes sw {
+  0%, 100% { opacity: .15; }
+  50%      { opacity: .85; }
+}
+ 
+/* ---- fog ---- */
+.fog {
+  left: -30%;
+  top: 68%;
+  width: 160%;
+  height: 26%;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(130, 110, 220, .35), transparent 45%),
+    radial-gradient(ellipse at 65% 60%, rgba(110, 150, 230, .3), transparent 50%);
+  mix-blend-mode: screen;
+  opacity: .5;
+  animation: fog 38s linear infinite alternate;
+}
+ 
+.fog.b {
+  top: 76%;
+  opacity: .35;
+  animation-duration: 52s;
+  animation-direction: alternate-reverse;
+}
+ 
+@keyframes fog {
+  from { transform: translateX(-8%); }
+  to   { transform: translateX(8%); }
+}
+ 
+/* ---- bats (made by home.js) ---- */
+.bat {
+  left: 0;
+  top: 0;
+  width: 3.6cqw;
+  will-change: transform;
+}
+ 
+.bat svg {
+  display: block;
+  width: 100%;
+  fill: #0a0320;
+  animation: flap .22s ease-in-out infinite alternate;
+}
+ 
+@keyframes flap {
+  from { transform: scaleY(1); }
+  to   { transform: scaleY(.3); }
+}
+ 
+/* ---- castle windows (made by home.js) ---- */
+.win {
+  transition: background .25s, box-shadow .25s;
+}
+ 
+/* ---- button keyframes ---- */
+@keyframes pulse {
+  0%, 100% { opacity: 0; }
+  50%      { opacity: .85; }
+}
+ 
+@keyframes hglitch {
+  0%, 78%, 100% { transform: none; }
+  80%           { transform: translateX(-.35cqw); }
+  84%           { transform: translateX(.4cqw); }
+  88%           { transform: translateX(-.2cqw); }
+  92%           { transform: none; }
+}
+ 
+@keyframes btnFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-.26cqw); }
+}
+ 
+@keyframes btnPulse {
+  0%, 100% { opacity: .35; transform: scale(.94); }
+  50%      { opacity: 1;   transform: scale(1.06); }
+}
+ 
+ 
+/* =========================================================
+   6. TITLE GLITCH, DRIPS, PARTICLES
+   ========================================================= */
+ 
+/* ---- glitch slices copy the title area of the picture ---- */
+.glitch {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+ 
+.glitch i {
+  position: absolute;
+  inset: 0;
+  background: url("assets/home.jpg") center / 100% 100% no-repeat;
+  opacity: 0;
+}
+ 
+.glitch i:nth-child(1) {
+  animation: sliceA 3.7s steps(1, end) infinite;
+}
+ 
+.glitch i:nth-child(2) {
+  animation: sliceB 5.3s steps(1, end) infinite;
+  animation-delay: -2s;
+}
+ 
+.glitch i:nth-child(3) {
+  animation: sliceC 4.1s steps(1, end) infinite;
+  animation-delay: -1s;
+}
+ 
+@keyframes sliceA {
+  0%, 86%, 100% { opacity: 0; }
+  87% { opacity: .9; clip-path: inset(27% 22.4% 52% 18.5%); transform: translateX(-.42cqw); }
+  88% { clip-path: inset(40% 22.4% 36% 18.5%); transform: translateX(.31cqw); }
+  89% { opacity: 0; }
+}
+ 
+@keyframes sliceB {
+  0%, 70%, 100% { opacity: 0; }
+  71% {
+    opacity: .8;
+    clip-path: inset(33% 22.4% 44% 18.5%);
+    transform: translateX(.26cqw);
+    filter: drop-shadow(-.2cqw 0 0 rgba(255, 60, 110, .8));
+  }
+  72% { clip-path: inset(56% 22.4% 26% 18.5%); transform: translateX(-.31cqw); }
+  73% { opacity: 0; }
+}
+ 
+@keyframes sliceC {
+  0%, 93%, 100% { opacity: 0; }
+  94% {
+    opacity: .7;
+    clip-path: inset(45% 22.4% 30% 18.5%);
+    transform: translateX(-.2cqw);
+    filter: drop-shadow(.2cqw 0 0 rgba(120, 255, 240, .8));
+  }
+  95% { opacity: 0; }
+}
+ 
+/* ---- drips falling from under the title (made by home.js) ---- */
+.drips {
+  left: 0;
+  top: 44%;
+  width: 100%;
+  height: 14%;
+}
+ 
+.drip {
+  position: absolute;
+  top: 0;
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(rgba(150, 240, 255, .95), rgba(150, 240, 255, .05));
+  box-shadow: 0 0 6px rgba(126, 232, 255, .6);
+  transform-origin: top;
+  transform: scaleY(0);
+  opacity: 0;
+  animation: dripFall var(--t, 6s) ease-in infinite;
+  animation-delay: var(--d, 0s);
+}
+ 
+@keyframes dripFall {
+  0%   { transform: scaleY(0); opacity: 0; }
+  12%  { opacity: .9; }
+  75%  { transform: scaleY(1); opacity: .7; }
+  100% { transform: scaleY(1); opacity: 0; }
+}
+ 
+/* ---- floating particles (canvas, drawn by home.js) ---- */
+.particles {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+ 
+ 
+/* =========================================================
+   7. REDUCED MOTION (keep everything still)
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .fx,
+  .sp,
+  .hs::before,
+  .hs .glow,
+  .hs .glow::before,
+  .glitch i,
+  .drip {
+    animation: none !important;
+  }
+ 
+  .bat,
+  .fog,
+  .glitch,
+  .drips,
+  .particles {
+    display: none;
+  }
+}
+ 
