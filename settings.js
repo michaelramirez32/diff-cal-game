@@ -47,5 +47,16 @@
     const t = () => tg.classList.toggle('on', CC.settings.mute);
     tg.onclick = () => { CC.settings.mute = !CC.settings.mute; t(); CC.save(); CC.click(); }; t();
   };
+  // touch devices: go fullscreen on the first tap (hides the browser bars) and lock landscape
+  if (matchMedia('(pointer:coarse)').matches || Math.min(screen.width, screen.height) < 820) {
+    const goFull = () => {
+      const el = document.documentElement;
+      if (document.fullscreenElement || !el.requestFullscreen) return;
+      el.requestFullscreen({ navigationUI: 'hide' })
+        .then(() => screen.orientation && screen.orientation.lock && screen.orientation.lock('landscape').catch(() => {}))
+        .catch(() => {});
+    };
+    addEventListener('pointerup', goFull);
+  }
   CC.save();
 })();

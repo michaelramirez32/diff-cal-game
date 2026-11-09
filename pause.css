@@ -9,5 +9,14 @@
 #ccp .b:hover,#ccp .b:focus-visible{transform:scale(1.12);color:#fff;outline:0}
 #ccp .b.q{color:#ff6a30}#ccp .b.q:hover{color:#ff9a5a}
 #ccp .s{position:absolute;inset:0;display:none;background:rgba(5,3,20,.8);backdrop-filter:blur(3px)}#ccp.set .s{display:block}#ccp.set .m{display:none}
-#ccPauseBtn{position:fixed;top:12px;right:12px;z-index:9998;width:46px;height:46px;border:3px solid #fff;border-radius:10px;background:rgba(20,10,50,.65);cursor:pointer;display:flex;gap:6px;align-items:center;justify-content:center}
+#ccPauseBtn{position:fixed;top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));z-index:9998;width:46px;height:46px;border:3px solid #fff;border-radius:10px;background:rgba(20,10,50,.65);cursor:pointer;display:flex;gap:6px;align-items:center;justify-content:center}
 #ccPauseBtn i{width:7px;height:20px;background:#fff;display:block}#ccPauseBtn:hover{background:rgba(90,60,160,.8)}
+
+/* short screens (phones in landscape) */
+@media (max-height:480px){
+  #ccp .m{gap:1.5vh}
+  #ccp h1{font-size:min(6vw,11vh)}
+  #ccp .bars{height:8vh;margin:0 0 1.5vh}#ccp .bars b{width:3vh}
+  #ccp .b{font-size:min(3vw,6vh);padding:.8vh 3vw}
+}
+@media (pointer:coarse){#ccPauseBtn{width:52px;height:52px}}

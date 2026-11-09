@@ -3,14 +3,17 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
   <title>Calculus Adventure</title>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="settings.css">
-  <link rel="stylesheet" href="home.css">
-  <link rel="stylesheet" href="buttons.css">
+  <link rel="stylesheet" href="settings.css?v=2">
+  <link rel="stylesheet" href="home.css?v=2">
+  <link rel="stylesheet" href="buttons.css?v=2">
 </head>
 <body>
+<!-- wide-screen extension: mirrored copies of the artwork on both sides of the 16:9 stage -->
+<div class="wide" aria-hidden="true"><div class="ext l"></div><div class="ext r"></div></div>
+
 <div class="stage" id="stage">
   <img class="bg" src="assets/home.jpg" alt="Calculus Adventure" draggable="false">
  
@@ -56,8 +59,8 @@
 <!-- background music (volume + mute are controlled by the Settings panel via settings.js) -->
 <audio id="bgm" src="assets/menu_theme.mp3" loop preload="auto"></audio>
  
-<script src="settings.js"></script>
-<script src="home.js"></script>
+<script src="settings.js?v=2"></script>
+<script src="home.js?v=2"></script>
 <script>
   /* Start the menu music. Browsers block autoplay until the player interacts,
      so try right away and fall back to the first click / key / touch. */

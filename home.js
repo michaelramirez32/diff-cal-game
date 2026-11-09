@@ -137,7 +137,7 @@ if (!matchMedia('(prefers-reduced-motion:reduce)').matches) {
     cv.width = 1920; cv.height = 1080;
     const spawn = first => ({ x: rnd(0, 1920), y: first ? rnd(0, 1080) : 1080 + rnd(0, 40),
       r: rnd(1, 2.6), vy: rnd(8, 26), vx: rnd(-6, 6), a: rnd(.25, .8), ph: rnd(0, 6.283) });
-    const motes = Array.from({ length: 42 }, () => spawn(true));
+    const motes = Array.from({ length: matchMedia('(pointer:coarse)').matches ? 18 : 42 }, () => spawn(true));
     let last = performance.now();
     (function frame(now) {
       const dt = Math.min(.05, (now - last) / 1000); last = now;

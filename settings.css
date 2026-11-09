@@ -1,5 +1,5 @@
 /* Settings panel (tombstone) styles. Link this on every page that uses settings.js */
-.ccs-stage{position:absolute;left:50%;top:50%;width:min(100vw,177.78vh);aspect-ratio:16/9;transform:translate(-50%,-50%);container-type:inline-size}
+.ccs-stage{position:absolute;left:50%;top:50%;width:min(100vw,177.78vh);width:min(100dvw,177.78dvh);aspect-ratio:16/9;transform:translate(-50%,-50%);container-type:inline-size}
 .ccs-stage>img{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;image-rendering:auto}
 .ccs-exit{position:absolute;left:1.9%;top:4.3%;width:15.2%;padding:0;border:0;background:none;cursor:pointer;transition:transform .12s}
 .ccs-exit img{width:100%;display:block}.ccs-exit:hover{transform:scale(1.07)}.ccs-exit:active{transform:scale(.95)}
@@ -10,3 +10,20 @@
 .ccs-tg{position:absolute;border:.22cqw solid #5d5163;border-radius:5cqw;background:#b9bccd;cursor:pointer;padding:0;transition:background .15s}
 .ccs-tg i{position:absolute;top:16%;height:68%;aspect-ratio:1;border-radius:50%;background:#7a6679;left:6%;transition:left .15s,background .15s}
 .ccs-tg.on{background:#7a6679}.ccs-tg.on i{left:auto;right:6%;background:#d9dbe8}
+
+/* ---------- responsive / touch (shared by every page) ---------- */
+html,body{touch-action:manipulation;overscroll-behavior:none;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-text-size-adjust:100%}
+/* phone held upright: ask the player to rotate (game art is 16:9) */
+@media (orientation:portrait) and (max-width:820px){
+  body::after{content:"ROTATE YOUR DEVICE\A TO LANDSCAPE";white-space:pre;position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;text-align:center;background:#12082b;color:#fff;font:4.2vw/2.2 'Press Start 2P',monospace}
+}
+/* bigger finger targets on touch screens */
+@media (pointer:coarse){
+  .ccs-sl{outline-offset:.4cqw}
+  .ccs-h{width:12%}
+}
+
+/* phones in landscape: settings panel fills the screen too (matches home.css section 11) */
+@media (orientation:landscape) and (max-height:520px), (pointer:coarse) and (orientation:landscape){
+  .ccs-stage{width:100%;height:100%;aspect-ratio:auto}
+}
