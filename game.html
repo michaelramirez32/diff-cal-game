@@ -16,24 +16,52 @@
       font-family:'Press Start 2P',monospace;
       color:#fff
     }
-    #msg{
+    /* 16:9 game screen, centered, scaled to fit */
+    #game{
       position:absolute;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      font-size:max(2vw,12px);
-      line-height:1.8
+      left:50%;
+      top:50%;
+      width:min(100vw,177.78vh);
+      width:min(100dvw,177.78dvh);
+      aspect-ratio:16/9;
+      transform:translate(-50%,-50%);
+      image-rendering:pixelated;
+      background:#12082b;
+      touch-action:none
     }
+    /* the gear icon in the HUD is the pause button now */
+    #ccPauseBtn{display:none !important}
+
+    /* on-screen controls (only created on touch devices) */
+    #touch{
+      position:fixed;
+      left:0;right:0;bottom:0;
+      display:flex;
+      justify-content:space-between;
+      padding:0 max(18px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));
+      z-index:50;
+      pointer-events:none
+    }
+    #touch .grp{display:flex;gap:16px}
+    #touch button{
+      pointer-events:auto;
+      width:74px;height:74px;
+      border:3px solid #fff;
+      border-radius:14px;
+      background:rgba(20,10,50,.55);
+      color:#fff;
+      font:inherit;
+      font-size:18px;
+      touch-action:none
+    }
+    #touch button[data-k=jump]{width:120px;font-size:14px}
+    #touch button.down{background:rgba(120,80,220,.75)}
   </style>
 </head>
 <body>
-  <div id="msg">GAME GOES HERE<br>(press P or Esc to pause)</div>
-  <script src="settings.js?v=2"></script>
-  <script src="pause.js?v=2"></script>
-  <!-- <script src="game.js"></script> -->
+  <canvas id="game"></canvas>
+  <script src="settings.js"></script>
+  <script src="pause.js"></script>
+  <script src="game.js?v=1"></script>
 </body>
 </html>
-
-
