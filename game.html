@@ -63,5 +63,45 @@
   <script src="settings.js"></script>
   <script src="pause.js"></script>
   <script src="game.js"></script>
+  <audio id="bgm" src="assets/game_theme.mp3" loop preload="auto"></audio>
 </body>
+<script>
+  /* Start the menu music. Browsers block autoplay until the player interacts,
+     so try right away and fall back to the first click / key / touch. */
+  (function () {
+    const bgm = document.getElementById('bgm');
+ 
+    /* iPhone/iPad ignore audio.volume, so detect that and use a Web Audio gain node instead */
+    bgm.volume = .5;
+    const volumeWorks = bgm.volume === .5;
+    let gain = null;
+    const useGain = () => {
+      if (volumeWorks || gain) return;
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        gain = ctx.createGain();
+        ctx.createMediaElementSource(bgm).connect(gain);
+        gain.connect(ctx.destination);
+        if (ctx.state === 'suspended') ctx.resume();
+      } catch (e) {}
+    };
+ 
+    /* apply the Music slider + Mute toggle (runs now and every time a setting changes) */
+    const applyVolume = () => {
+      const v = CC.settings.mute ? 0 : CC.settings.music;
+      bgm.muted = CC.settings.mute;
+      if (volumeWorks) bgm.volume = v;
+      else if (gain) gain.gain.value = v;
+    };
+    window.addEventListener('cc:settings', applyVolume);
+    applyVolume();
+ 
+    const events = ['pointerdown', 'keydown', 'touchstart'];
+    const started = () => { useGain(); applyVolume(); };
+    const unlock = () => {
+      bgm.play().then(() => { started(); events.forEach(ev => removeEventListener(ev, unlock)); }).catch(() => {});
+    };
+    bgm.play().then(started).catch(() => events.forEach(ev => addEventListener(ev, unlock)));
+  })();
+</script>
 </html>
