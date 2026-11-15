@@ -6,7 +6,7 @@
    ========================================================= */
 (() => {
   'use strict';
-  const W = 1920, H = 1080, A = 'assets/game/';
+  const W = 1920, H = 1080, A = 'assets/sprites/';
   const cv = document.getElementById('game'), ctx = cv.getContext('2d');
   cv.width = W; cv.height = H;
 
